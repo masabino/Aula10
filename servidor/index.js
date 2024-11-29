@@ -37,7 +37,21 @@ app.get('/alunos', (req, res) => {
             console.error('Usuário não encontrado:', err);
             return res.status(404).json({ error: 'Usuário não encontrado'});
         }
-        res.json(results[0]);
+        res.json(results);
+    });
+});
+
+app.post('/alunos', (req, res) => {
+    const { nome, cidade, estado } = req.body;
+
+    const sql = 'INSERT INTO alunos(nome, cidade, estado) VALUE (?,?,?)';
+
+    db.query(sql, [nome, cidade, estado], (err, result) => {
+        if (err) {
+            console.error('Erro ao atualizar usuário:', err);
+            return res.status(500).json({ error: 'Erro ao cadastrar usuário'});
+        }
+        res.json({ message: 'Aluno cadastrado com sucesso!' });
     });
 });
 
